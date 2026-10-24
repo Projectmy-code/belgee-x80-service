@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10151d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Belgee X80">
+  <meta name="description" content="Журнал технического обслуживания Belgee X80">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Belgee X80 · Сервисный журнал</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark">B</div><div><div class="eyebrow">PERSONAL GARAGE</div><div class="brand-title">BELGEE <span>X80</span></div></div></div>
+      <button id="installHint" class="icon-btn" aria-label="Как установить приложение" title="Установка на iPhone">＋</button>
+    </header>
+
+    <main>
+      <section class="hero panel">
+        <div class="hero-copy">
+          <div class="eyebrow accent">SERVICE CONTROL</div>
+          <h1>Ваш автомобиль.<br><span>Всё под контролем.</span></h1>
+          <p>История обслуживания, регламент ТО и предстоящие работы — в одном месте.</p>
+        </div>
+        <div class="car-art" aria-hidden="true"><div class="car-glow"></div><svg viewBox="0 0 340 130" role="img"><path d="M45 81 L57 58 Q64 49 91 44 L127 20 Q138 13 158 14 L218 17 Q237 18 251 39 L275 51 Q291 55 298 69 L303 86 L290 95 L52 95 L37 89 Z" fill="#202c3a" stroke="#8b9aab" stroke-width="2"/><path d="M132 25 L160 21 L210 24 Q226 26 239 43 L133 42 Z" fill="#8aa4b8" opacity=".75"/><path d="M122 26 L91 47 L126 42 Z" fill="#8aa4b8" opacity=".65"/><path d="M47 77 L77 73 L78 84 L43 85 Z" fill="#dce9f6"/><path d="M278 62 L295 70 L298 80 L279 79 Z" fill="#f59e0b"/><path d="M111 49 L113 90 M248 49 L259 89" stroke="#566779" stroke-width="2"/><circle cx="91" cy="91" r="19" fill="#080b10" stroke="#8b9aab" stroke-width="3"/><circle cx="91" cy="91" r="8" fill="#687788"/><circle cx="263" cy="91" r="19" fill="#080b10" stroke="#8b9aab" stroke-width="3"/><circle cx="263" cy="91" r="8" fill="#687788"/><path d="M143 63 L232 63" stroke="#f59e0b" stroke-width="2" opacity=".7"/></svg></div>
+        <div class="hero-bottom"><span class="status-dot"></span><span id="statusText">Журнал готов к заполнению</span><span class="hero-separator">•</span><span id="lastServiceLabel">Первое обслуживание не добавлено</span></div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat panel"><div class="stat-label">ТЕКУЩИЙ ПРОБЕГ</div><div class="stat-value"><span id="currentMileage">—</span><small>км</small></div><button class="text-btn" id="editMileage">Изменить пробег ↗</button></article>
+        <article class="stat panel"><div class="stat-label">СЛЕДУЮЩЕЕ ТО</div><div class="stat-value"><span id="nextMileage">15 000</span><small>км</small></div><div class="stat-foot" id="nextDueText">По регламенту: 15 000 км / 12 мес.</div></article>
+        <article class="stat panel"><div class="stat-label">ЗАПИСЕЙ В ЖУРНАЛЕ</div><div class="stat-value"><span id="recordCount">0</span><small>шт.</small></div><div class="stat-foot">Все работы и расходы</div></article>
+      </section>
+
+      <nav class="tabs" aria-label="Разделы приложения">
+        <button class="tab active" data-tab="overview">Обзор</button>
+        <button class="tab" data-tab="schedule">Регламент ТО</button>
+        <button class="tab" data-tab="history">История</button>
+        <button class="tab" data-tab="settings">Данные</button>
+      </nav>
+
+      <section id="view-overview" class="view">
+        <div class="section-heading"><div><div class="eyebrow">YOUR NEXT STEPS</div><h2>Что пора сделать</h2></div><button class="primary-btn" id="addServiceTop">＋ Добавить ТО</button></div>
+        <div id="dueCards" class="due-list"></div>
+        <div class="two-col">
+          <article class="panel content-panel">
+            <div class="panel-heading"><div><div class="eyebrow">SERVICE INTERVALS</div><h3>Ближайшие этапы</h3></div><span class="pill">15 000 км</span></div>
+            <div id="milestoneList" class="milestones"></div>
+          </article>
+          <article class="panel content-panel">
+            <div class="panel-heading"><div><div class="eyebrow">QUICK ACTION</div><h3>Быстрая запись</h3></div><span class="quick-icon">↗</span></div>
+            <p class="muted">Зафиксируйте визит в сервис, замену расходников или самостоятельную работу.</p>
+            <button class="secondary-btn full" id="quickAdd">Добавить запись в журнал <span>→</span></button>
+            <div class="mini-note">Данные сохраняются на этом устройстве. Делайте резервную копию в разделе «Данные».</div>
+          </article>
+        </div>
+        <article class="panel content-panel price-panel">
+          <div class="panel-heading"><div><div class="eyebrow">ОЦЕНКА СТОИМОСТИ</div><h3>Ориентир по ТО Belgee X80</h3></div><span class="pill">Прайс из исходной таблицы</span></div>
+          <p class="muted">Цены перенесены из предоставленного изображения. Валюта и актуальность прайса не указаны — уточняйте у сервиса.</p>
+          <div id="priceGrid" class="price-grid"></div>
+        </article>
+      </section>
+
+      <section id="view-schedule" class="view hidden">
+        <div class="section-heading"><div><div class="eyebrow">MAINTENANCE PLAN</div><h2>Регламент обслуживания</h2><p class="muted">Плановые отметки через каждые 15 000 км или 12 месяцев — что наступит раньше.</p></div></div>
+        <div class="notice"><strong>Важно:</strong> это удобный трекер по предоставленной таблице. Для конкретной комплектации, условий эксплуатации и гарантийных требований сверяйтесь с сервисной книжкой Belgee.</div>
+        <div id="scheduleList" class="schedule-list"></div>
+        <article class="panel content-panel custom-maintenance">
+          <div class="panel-heading"><div><div class="eyebrow">DEALER RECOMMENDATIONS</div><h3>Дополнительные работы от дилера</h3></div><span class="pill">Свои интервалы</span></div>
+          <p class="muted">Если дилер назначил обслуживание на другой пробег или дату, добавьте его сюда. Работу можно отметить выполненной — она останется в вашем списке.</p>
+          <form id="customTaskForm" class="custom-task-form">
+            <label>Что нужно сделать<input id="customTaskTitle" required maxlength="120" placeholder="Например, проверить приводной ремень"></label>
+            <div class="form-row"><label>Пробег, км<input id="customTaskMileage" type="number" min="0" step="1" placeholder="Например, 12000"></label><label>Срок (необязательно)<input id="customTaskDate" type="date"></label></div>
+            <label>Комментарий дилера (необязательно)<input id="customTaskNote" maxlength="250" placeholder="Рекомендация, причина, артикул…"></label>
+            <button class="primary-btn" type="submit">＋ Добавить работу</button>
+          </form>
+          <div id="customTaskList" class="custom-task-list"></div>
+        </article>
+        <article class="panel content-panel legend"><b>Обозначения</b><div><span class="legend-chip replace">R</span> Замена</div><div><span class="legend-chip inspect">I</span> Проверка / осмотр</div><div><span class="legend-chip lube">L</span> Смазка / обслуживание</div></article>
+      </section>
+
+      <section id="view-history" class="view hidden">
+        <div class="section-heading"><div><div class="eyebrow">SERVICE ARCHIVE</div><h2>История обслуживания</h2></div><button class="primary-btn" id="addServiceHistory">＋ Добавить</button></div>
+        <div class="filter-row"><input id="historySearch" type="search" placeholder="Поиск по работам, сервису…" aria-label="Поиск в истории"><select id="historyFilter" aria-label="Фильтр записей"><option value="all">Все записи</option><option value="scheduled">Плановое ТО</option><option value="other">Другие работы</option></select></div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+
+      <section id="view-settings" class="view hidden">
+        <div class="section-heading"><div><div class="eyebrow">VEHICLE & BACKUP</div><h2>Данные автомобиля</h2></div></div>
+        <div class="settings-grid">
+          <form id="vehicleForm" class="panel content-panel form-panel">
+            <h3>Параметры автомобиля</h3>
+            <label>Текущий пробег, км<input id="settingMileage" type="number" min="0" step="1" required placeholder="Например, 12450"></label>
+            <label>Дата начала эксплуатации<input id="startDate" type="date"></label>
+            <label>Дата последнего ТО<input id="lastServiceDate" type="date"></label>
+            <label>Пробег на последнем ТО, км<input id="lastServiceMileage" type="number" min="0" step="1" placeholder="Если известно"></label>
+            <label>VIN / заметка (необязательно)<input id="vehicleNote" type="text" maxlength="100" placeholder="VIN или заметка"></label>
+            <button class="primary-btn" type="submit">Сохранить параметры</button>
+          </form>
+          <div class="stack">
+            <article class="panel content-panel"><h3>Резервная копия</h3><p class="muted">Экспортируйте журнал и настройки в JSON. Импорт восстановит сохранённые данные.</p><div class="button-stack"><button class="secondary-btn full" id="exportData">↓ Экспортировать данные</button><label class="file-button">↑ Импортировать JSON<input type="file" id="importFile" accept="application/json,.json" hidden></label></div></article>
+            <article class="panel content-panel"><h3>Установка на iPhone</h3><ol class="install-steps"><li>Откройте приложение в Safari по HTTPS.</li><li>Нажмите «Поделиться».</li><li>Выберите «На экран Домой» и подтвердите.</li></ol><p class="mini-note">После установки приложение можно запускать с иконки. Для первой загрузки нужен интернет.</p></article>
+            <article class="panel content-panel danger-zone"><h3>Сброс приложения</h3><p class="muted">Удаляет журнал и настройки с этого устройства.</p><button class="danger-btn" id="resetData">Сбросить все данные</button></article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer><span> BELGEE X80 · SERVICE LOG</span><span>Локальное хранение · PWA</span></footer>
+  </div>
+
+  <dialog id="serviceDialog" class="modal">
+    <form id="serviceForm" method="dialog">
+      <div class="modal-head"><div><div class="eyebrow">SERVICE ENTRY</div><h2 id="dialogTitle">Новая запись</h2></div><button class="close-btn" type="button" id="closeDialog" aria-label="Закрыть">×</button></div>
+      <input type="hidden" id="serviceId">
+      <label>Тип записи<select id="serviceType"><option value="scheduled">Плановое ТО</option><option value="repair">Ремонт</option><option value="consumables">Расходники</option><option value="inspection">Осмотр / диагностика</option><option value="other">Другое</option></select></label>
+      <div class="form-row"><label>Дата<input id="serviceDate" type="date" required></label><label>Пробег, км<input id="serviceMileage" type="number" min="0" step="1" required placeholder="Например, 15000"></label></div>
+      <label>Работы / материалы<input id="serviceTitle" type="text" required maxlength="120" placeholder="Замена масла и фильтров"></label>
+      <div class="form-row"><label>Стоимость<input id="serviceCost" type="number" min="0" step="0.01" placeholder="0"></label><label>Сервис / исполнитель<input id="serviceShop" type="text" maxlength="100" placeholder="Название сервиса"></label></div>
+      <label>Заметки<textarea id="serviceNotes" rows="3" maxlength="1000" placeholder="Артикулы, детали, рекомендации…"></textarea></label>
+      <div class="modal-actions"><button type="button" class="secondary-btn" id="cancelDialog">Отмена</button><button type="submit" class="primary-btn">Сохранить запись</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
